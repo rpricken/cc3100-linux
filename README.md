@@ -11,10 +11,10 @@ To get started:
   - sync the repository into the extracted sdk
   	`rsync -rtv cc3100-linux/ <path>/ti/cc3100-sdk/`
   - to modify the example applications:
-      `cp simplelink/template_user.h platform/linux/user.h`
-      `patch platform/linux/user.h < user.patch`
-      `cd examples`
-      `patch -p1 < examples.patch`
+      - `cp simplelink/template_user.h platform/linux/user.h`
+      - `patch platform/linux/user.h < user.patch`
+      - `cd examples`
+      - `patch -p1 < examples.patch`
 
 Three sample applications from TI were tested and can be compiled:
 
