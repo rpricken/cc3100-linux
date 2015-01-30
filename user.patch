@@ -3,7 +3,7 @@
 @@ -66,6 +66,10 @@
   ******************************************************************************
   */
-
+ 
 +#include "user_functions.h"
 +
 +typedef P_EVENT_HANDLER                         SL_P_EVENT_HANDLER;
@@ -60,9 +60,9 @@
  
      \warning        
  */
--#define sl_IfRead
-+#define sl_IfRead	spi_read
-
+-#define sl_IfRead 
++#define sl_IfRead	spi_read 
+ 
  /*!
      \brief attempts to write up to len bytes to the SPI channel
 @@ -510,7 +514,7 @@
