@@ -20,13 +20,14 @@ Note: Some plattforms for example the beaglebone support a spi wordsize of 32, t
     - `insmod cc3100-spi.ko`
 
 - pin assignment (used SPI0): http://beagleboard.org/static/images/cape-headers-spi.png
+```
         SCLK:   P9-22
         MISO:   P9-18
         MOSI:   P9-21
         CS:     P9-17 (CS0)
         nHIB:   P8-4
         IRQ:    P8-22
-
+```
 
 ###RaspberryPi
 - go to your kernel source and edit /linux/arch/arm/mach-bcm2708/bcm2708.c
@@ -68,10 +69,11 @@ Note: Some plattforms for example the beaglebone support a spi wordsize of 32, t
     - `insmod cc3100-spi.ko`
 
 - pin assignment: http://elinux.org/RPi_Low-level_peripherals
-        SCLK:   11
-        MISO:   9
-        MOSI:   10
-        CS:     8
-        nHIB:   22
-        IRQ:    24
-        
+```
+	SCLK:   11
+	MISO:   9
+	MOSI:   10
+	CS:     8
+	nHIB:   22
+	IRQ:    24
+```
