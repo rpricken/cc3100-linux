@@ -1,0 +1,96 @@
+diff -rupN examples-org/getting_started_with_wlan_ap/main.c examples/getting_started_with_wlan_ap/main.c
+--- examples-org/getting_started_with_wlan_ap/main.c	2014-09-09 12:22:38.000000000 +0200
++++ examples/getting_started_with_wlan_ap/main.c	2015-01-30 11:51:35.907536332 +0100
+@@ -74,6 +74,10 @@
+ #define PING_REQUEST_TIMEOUT 3000
+ #define PING_ATTEMPT         3
+ 
++#define CLI_Write printf
++#define _SlNonOsMainLoopTask() ; 
++
++
+ /* Application specific status/error codes */
+ typedef enum{
+     LAN_CONNECTION_FAILED = -0x7D0,        /* Choosing this number to avoid overlap with host-driver's error codes */
+@@ -332,6 +336,16 @@ int main(int argc, char** argv)
+     retVal = initializeAppVariables();
+     ASSERT_ON_ERROR(retVal);
+ 
++    pthread_t threadSlTask;
++
++        /* function scheduler  */
++    retVal = pthread_create( &threadSlTask, NULL, sl_Task, NULL);
++    if(retVal < 0){
++	printf("Failed to create pthread for sl_Task \n\r");
++	return -1;
++    }
++
++
+     /* Stop WDT and initialize the system-clock of the MCU */
+     stopWDT();
+     initClk();
+@@ -355,7 +369,7 @@ int main(int argc, char** argv)
+      * Note that all profiles and persistent settings that were done on the
+      * device will be lost
+      */
+-    retVal = configureSimpleLinkToDefaultState();
++//    retVal = configureSimpleLinkToDefaultState();
+     if(retVal < 0)
+     {
+         if (DEVICE_NOT_IN_STATION_MODE == retVal)
+diff -rupN examples-org/spi_debug_tool/main.c examples/spi_debug_tool/main.c
+--- examples-org/spi_debug_tool/main.c	2014-09-02 16:13:31.000000000 +0200
++++ examples/spi_debug_tool/main.c	2015-01-30 11:47:40.737340930 +0100
+@@ -42,7 +42,7 @@
+  *                          doc\examples\spi_debug_tool.pdf
+  */
+ 
+-#include "daignostic.h"
++//#include "daignostic.h"
+ #include "user.h"
+ 
+ #define APPLICATION_VERSION "1.1.0"
+@@ -101,6 +101,12 @@
+ 
+ #define SUCCESS         0
+ 
++#define UartWrite printf
++#define StopWDT stopWDT
++#define Init_Clk initClk
++
++
++
+ typedef unsigned long   _u32;
+ 
+  /* Status values - These are used to set/reset the corresponding bits in a 'status_variable' */
+diff -rupN examples-org/tcp_socket/main.c examples/tcp_socket/main.c
+--- examples-org/tcp_socket/main.c	2014-09-09 12:35:58.000000000 +0200
++++ examples/tcp_socket/main.c	2015-01-30 12:35:39.585909200 +0100
+@@ -58,7 +58,10 @@
+ #define BUF_SIZE        1400
+ #define NO_OF_PACKETS   1000
+ 
+-/* Application specific status/error codes */
++#define CLI_Write printf
++#define _SlNonOsMainLoopTask wait
++
++
+ typedef enum{
+     DEVICE_NOT_IN_STATION_MODE = -0x7D0,        /* Choosing this number to avoid overlap w/ host-driver's error codes */
+     TCP_SEND_ERROR = DEVICE_NOT_IN_STATION_MODE - 1,
+@@ -296,6 +299,15 @@ int main(int argc, char** argv)
+     retVal = initializeAppVariables();
+     ASSERT_ON_ERROR(retVal);
+ 
++    pthread_t threadSlTask;
++
++    /* function scheduler  */
++    retVal = pthread_create( &threadSlTask, NULL, sl_Task, NULL);
++    if(retVal < 0){
++	printf("Failed to create pthread for sl_Task \n\r");
++	return -1;
++    }
++
+     /* Stop WDT and initialize the system-clock of the MCU
+        These functions needs to be implemented in PAL */
+     stopWDT();

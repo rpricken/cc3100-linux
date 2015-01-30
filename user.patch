@@ -1,0 +1,293 @@
+--- template_user.h	2015-01-30 12:54:39.674116832 +0100
++++ user.h	2015-01-30 13:10:46.814662885 +0100
+@@ -66,6 +66,10 @@
+  ******************************************************************************
+  */
+
++#include "user_functions.h"
++
++typedef P_EVENT_HANDLER                         SL_P_EVENT_HANDLER;
++
+ /*!
+  ******************************************************************************
+ 
+@@ -359,7 +363,7 @@
+     \note       belongs to \ref porting_sec
+ 
+ */
+-#define sl_DeviceEnable()          
++#define sl_DeviceEnable	CC3100_enable        
+ 
+ /*!
+     \brief		Disable the Network Processor
+@@ -368,7 +372,7 @@
+ 
+     \note       belongs to \ref porting_sec
+ */
+-#define sl_DeviceDisable() 
++#define sl_DeviceDisable	CC3100_disable
+ 
+ /*!
+ 
+@@ -400,7 +404,7 @@
+  ******************************************************************************
+  */
+ 
+-#define _SlFd_t		
++#define _SlFd_t		int	
+ 
+ /*!
+     \brief      Opens an interface communication port to be used for communicating
+@@ -435,7 +439,7 @@
+ 
+     \warning        
+ */
+-#define sl_IfOpen  
++#define sl_IfOpen	spi_open  
+ 
+ /*!
+     \brief      Closes an opened interface communication port
+@@ -454,7 +458,7 @@
+ 
+     \warning        
+ */
+-#define sl_IfClose 
++#define sl_IfClose	spi_close
+ 
+ /*!
+     \brief      Attempts to read up to len bytes from an opened communication channel 
+@@ -480,7 +484,7 @@
+ 
+     \warning        
+ */
+-#define sl_IfRead
++#define sl_IfRead	spi_read
+
+ /*!
+     \brief attempts to write up to len bytes to the SPI channel
+@@ -510,7 +514,7 @@
+ 
+     \warning        
+ */
+-#define sl_IfWrite  
++#define sl_IfWrite	spi_write  
+ 
+ /*!
+     \brief 		register an interrupt handler routine for the host IRQ
+@@ -535,7 +539,8 @@
+ 
+     \warning        
+ */
+-#define sl_IfRegIntHdlr(InterruptHdl , pValue)          SlStudio_RegisterInterruptHandler(InterruptHdl , pValue)
++#define sl_IfRegIntHdlr(InterruptHdl , pValue) \
++                                registerInterruptHandler(InterruptHdl , pValue)
+ /*!
+     \brief 		Masks the Host IRQ
+ 
+@@ -644,7 +649,7 @@
+ 
+     \warning        
+ */
+-#define sl_Malloc(Size)                                 malloc(Size)
++#define sl_Malloc(Size)
+ 
+ /*!
+     \brief
+@@ -655,7 +660,7 @@
+ 
+     \warning        
+ */
+-#define sl_Free(pMem)                                   free(pMem)
++#define sl_Free(pMem)
+ 
+ #endif
+ 
+@@ -703,7 +708,7 @@
+     \note           belongs to \ref porting_sec
+     \warning
+ */
+-#define SL_OS_RET_CODE_OK                       ((int)OSI_OK)
++#define SL_OS_RET_CODE_OK                       RETURN_CODE_OK
+ 
+ /*!
+     \brief
+@@ -711,7 +716,7 @@
+     \note           belongs to \ref porting_sec
+     \warning
+ */
+-#define SL_OS_WAIT_FOREVER                      ((OsiTime_t)OSI_WAIT_FOREVER)
++#define SL_OS_WAIT_FOREVER                      WAIT_FOREVER
+ 
+ /*!
+     \brief
+@@ -719,7 +724,7 @@
+     \note           belongs to \ref porting_sec
+     \warning
+ */
+-#define SL_OS_NO_WAIT	                        ((OsiTime_t)OSI_NO_WAIT)
++#define SL_OS_NO_WAIT	                        NO_WAIT
+ 
+ /*!
+ 	\brief type definition for a time value
+@@ -728,7 +733,7 @@
+ 
+     \note       belongs to \ref porting_sec
+ */
+-#define _SlTime_t				
++#define _SlTime_t	char			
+ 
+ /*!
+ 	\brief 	type definition for a sync object container
+@@ -743,7 +748,7 @@
+ 
+     \note       belongs to \ref porting_sec
+ */
+-#define _SlSyncObj_t			
++#define _SlSyncObj_t		condObj	
+ 
+     
+ /*!
+@@ -760,7 +765,7 @@
+     \note       belongs to \ref porting_sec
+ 	\warning
+ */
+-#define sl_SyncObjCreate(pSyncObj,pName)           
++#define sl_SyncObjCreate(pSyncObj,pName)           condObjCreate(pSyncObj,pName)
+ 
+     
+ /*!
+@@ -773,7 +778,7 @@
+     \note       belongs to \ref porting_sec
+ 	\warning
+ */
+-#define sl_SyncObjDelete(pSyncObj)                  
++#define sl_SyncObjDelete(pSyncObj)                  condObjDelete(pSyncObj)
+ 
+     
+ /*!
+@@ -788,7 +793,7 @@
+ 	\note		the function could be called from ISR context
+ 	\warning
+ */
+-#define sl_SyncObjSignal(pSyncObj)                
++#define sl_SyncObjSignal(pSyncObj)                condObjSignal(pSyncObj)
+ 
+ /*!
+ 	\brief 		This function generates a sync signal for the object from Interrupt
+@@ -802,7 +807,7 @@
+ 	\note		the function could be called from ISR context
+ 	\warning
+ */
+-#define sl_SyncObjSignalFromIRQ(pSyncObj)           
++#define sl_SyncObjSignalFromIRQ(pSyncObj)           condObjSignal(pSyncObj)
+ /*!
+ 	\brief 	This function waits for a sync signal of the specific sync object
+ 
+@@ -818,7 +823,7 @@
+     \note       belongs to \ref porting_sec
+ 	\warning
+ */
+-#define sl_SyncObjWait(pSyncObj,Timeout)             
++#define sl_SyncObjWait(pSyncObj,Timeout)             condObjWait(pSyncObj,Timeout)
+     
+ /*!
+ 	\brief 	type definition for a locking object container
+@@ -830,7 +835,7 @@
+ 	\note	On each porting or platform the type could be whatever is needed - integer, structure etc.
+     \note       belongs to \ref porting_sec
+ */
+-#define _SlLockObj_t 			
++#define _SlLockObj_t 			pthread_mutex_t
+ 
+ /*!
+ 	\brief 	This function creates a locking object.
+@@ -845,7 +850,7 @@
+     \note       belongs to \ref porting_sec
+ 	\warning
+ */
+-#define sl_LockObjCreate(pLockObj,pName)            
++#define sl_LockObjCreate(pLockObj,pName)            mutexObjCreate(pLockObj,pName)
+     
+ /*!
+ 	\brief 	This function deletes a locking object.
+@@ -857,7 +862,7 @@
+     \note       belongs to \ref porting_sec
+ 	\warning
+ */
+-#define sl_LockObjDelete(pLockObj)                 
++#define sl_LockObjDelete(pLockObj)                 mutexObjDelete(pLockObj)
+     
+ /*!
+ 	\brief 	This function locks a locking object.
+@@ -878,7 +883,7 @@
+     \note       belongs to \ref porting_sec
+ 	\warning
+ */
+-#define sl_LockObjLock(pLockObj,Timeout)            
++#define sl_LockObjLock(pLockObj,Timeout)            mutexObjLock(pLockObj,Timeout)
+     
+ /*!
+ 	\brief 	This function unlock a locking object.
+@@ -890,7 +895,7 @@
+     \note       belongs to \ref porting_sec
+ 	\warning
+ */
+-#define sl_LockObjUnlock(pLockObj)                 
++#define sl_LockObjUnlock(pLockObj)                 mutexObjUnlock(pLockObj)
+ 
+ #endif
+ /*!
+@@ -910,7 +915,7 @@
+     \note       belongs to \ref porting_sec
+ 	\warning
+ */
+-#define SL_PLATFORM_EXTERNAL_SPAWN
++//#define SL_PLATFORM_EXTERNAL_SPAWN
+ 
+ #ifdef SL_PLATFORM_EXTERNAL_SPAWN
+ #define sl_Spawn(pEntry,pValue,flags)               
+@@ -950,7 +955,7 @@
+     \warning
+ */
+ 
+-#define sl_GeneralEvtHdlr 
++#define sl_GeneralEvtHdlr 	SimpleLinkGeneralEventHandler
+ 
+ 
+ /*!
+@@ -965,7 +970,7 @@
+ 
+     \warning
+ */
+-#define sl_WlanEvtHdlr                              
++#define sl_WlanEvtHdlr               SimpleLinkWlanEventHandler               
+ 
+ /*!
+     \brief          An event handler for IP address asynchronous event. Usually accepted after new WLAN connection.
+@@ -980,7 +985,7 @@
+     \warning
+ */
+ 
+-#define sl_NetAppEvtHdlr   
++#define sl_NetAppEvtHdlr   	SimpleLinkNetAppEventHandler
+ 
+ /*!
+     \brief          A callback for HTTP server events.
+@@ -999,7 +1004,7 @@
+     \warning
+ */
+ 
+-#define sl_HttpServerCallback   
++#define sl_HttpServerCallback   SimpleLinkHttpServerCallback
+ 
+ /*!
+     \brief
+@@ -1010,7 +1015,7 @@
+ 
+     \warning
+ */
+-#define sl_SockEvtHdlr 
++#define sl_SockEvtHdlr 	SimpleLinkSockEventHandler
+ 
+ 
+ 
