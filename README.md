@@ -1,5 +1,7 @@
 # cc3100-linux
-Patch to run wlan module TI cc3100boost under linux.
+Patch to run wlan module TI cc3100boost on linux.
+
+Note: To execute these applications the kernel module cc3100-spi has to be loaded successfully. For further information read the file ./cc3100-spi-kernelmodul/README.md
 
 To get started:
 - download the cc3100sdk from ti: http://www.ti.com/tool/cc3100sdk
@@ -10,7 +12,7 @@ To get started:
   - clone the git repository
   - sync the repository into the extracted sdk
   	`rsync -rtv cc3100-linux/ <path>/ti/cc3100-sdk/`
-  - to modify the example applications:
+  - to modify the example applications and create header file:
       - `cp simplelink/template_user.h platform/linux/user.h`
       - `patch platform/linux/user.h < user.patch`
       - `cd examples`
@@ -35,5 +37,3 @@ Three sample applications from TI were tested and can be compiled:
   - Beaglebone (white) Rev. 3, Debian 7.5 (build 2014-05-14) Kernel 3.14.22
     - Debian image: http://elinux.org/BeagleBoardDebian#BeagleBone.2FBeagleBone_Black
     - kernel source: https://github.com/beagleboard/linux
-
-Note: To execute these applications the kernel module cc3100-spi has to be loaded successfully. For further information read the file ./cc3100-spi-kernelmodul/README!
