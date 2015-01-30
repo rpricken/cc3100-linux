@@ -7,11 +7,14 @@ To get started:
   - install (extract) the sdk:
     `wine CC3100SDK-1.0.0-windows-installer.exe`
 
-  - go to the folder where you installed the sdk cc3100-sdk/ and clone the git repository in this folder!
-	    `git clone ....`
-
+  - clone the git repository
+  - sync the repository into the extracted sdk
+  	`rsync -rtv cc3100-linux/ <path>/ti/cc3100-sdk/`
   - to modify the example applications:
-      `patch ...`
+      - `cp simplelink/template_user.h platform/linux/user.h`
+      - `patch platform/linux/user.h < user.patch`
+      - `cd examples`
+      - `patch -p1 < examples.patch`
 
 Three sample applications from TI were tested and can be compiled:
 
